@@ -65,7 +65,7 @@ def search_database(request):
                     last_id = 0
                     last_row = 0
 
-                results = []
+                results = {}
                 cursor.execute("SHOW TABLES")
                 tables = cursor.fetchall()
 
@@ -105,9 +105,10 @@ def search_database(request):
                                 else:
                                     log_progress(table_name, column_name, last_row=row_number)
 
-                                results.append(
+                                if table_name not in results:
+                                    results[table_name] = []
+                                results[table_name].append(
                                     {
-                                        'table_name':table_name,                                    
                                         'rows': [row],
                                         'columns': columns,
                                         'column_name': column_name
